@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Registration • Online Course Registration</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header + Nav -->
+  <header>
+    <div><strong>Online Course Registration</strong></div>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="course-search.html">Course Search</a>
+      <a href="student-registration.html" aria-current="page">Student Registration</a>
+      <a href="instructor-schedule.html">Instructor Schedule</a>
+    </nav>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <main class="container">
+    <h1>Student Registration</h1>
+
+    <!-- Enrolled Sessions -->
+    <section>
+      <h2>Your Enrolled Sessions</h2>
+      <table id="enrolled-table">
+        <thead>
+          <tr>
+            <th>Course Code</th>
+            <th>Title</th>
+            <th>Instructor</th>
+            <th>Credits</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JS will fill this -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- New Registration -->
+    <section>
+      <h2>Register for a New Session</h2>
+      <div class="form-group">
+        <label for="course-select">Select a Course:</label>
+        <select id="course-select">
+          <option value="">— Choose a course —</option>
+        </select>
+      </div>
+      <button id="register-btn">Register</button>
+      <div id="message" class="message"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

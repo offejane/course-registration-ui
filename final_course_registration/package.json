@@ -1,0 +1,16 @@
+{
+  "name": "course-registration-ui-main",
+  "version": "1.0.0",
+  "description": "This screen was created by Amin Adam as part of Team 4's deliverables for the course registration system project. It allows users to search for courses by department, instructor, or course number, and view basic course info like credit hours and prerequisites.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
