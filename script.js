@@ -1,14 +1,94 @@
+// ---- Dummy data; replace with your API calls later ----
+const allCourses = [
+  { id: 'INFO101', title: 'Intro to IS', instructor: 'Dr. A', credits: 3, enrolled: 25, max: 30 },
+  { id: 'INFO350', title: 'Data Analytics', instructor: 'Dr. B', credits: 4, enrolled: 30, max: 30 },
+  { id: 'MATH200', title: 'Calculus II', instructor: 'Dr. C', credits: 4, enrolled: 28, max: 30 }
+];
+let myEnrollments = [
+  { id: 'MATH200', title: 'Calculus II', instructor: 'Dr. C', credits: 4 }
+];
 
-let dropCourseId = null;
+// --- Helpers & DOM references ---
+const enrolledTbody = document.querySelector('#enrolled-table tbody');
+const courseSelect  = document.getElementById('course-select');
+const registerBtn   = document.getElementById('register-btn');
+const messageDiv    = document.getElementById('message');
 
-async function registerUser(){const e=document.getElementById('regEmail').value,p=document.getElementById('regPassword').value;if(!e||!p){alert('Please enter email and password');return;}try{const r=await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})});const d=await r.json();alert(d.message);localStorage.setItem('userEmail',e);}catch(e){alert('Registration failed');}}
-async function loginUser(){const e=document.getElementById('loginEmail').value,p=document.getElementById('loginPassword').value;if(!e||!p){alert('Please enter email and password');return;}try{const r=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})});const d=await r.json();alert(d.message);localStorage.setItem('userEmail',e);}catch(e){alert('Login failed');}}
-async function fetchCourses(){try{const r=await fetch('/courses');const d=await r.json();const s=document.getElementById('course-select');if(s){s.innerHTML='<option value="">— Choose a course —</option>';d.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=`${c.name} (Seats left: ${c.seats})`;s.appendChild(o);});}}catch(e){alert('Cannot load courses');}}
-async function registerCourse(){const id=parseInt(document.getElementById('course-select').value),e=localStorage.getItem('userEmail');if(!id){alert('Select a course');return;}try{const r=await fetch('/register-course',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseId:id,userEmail:e})});const d=await r.json();alert(d.message);fetchCourses();loadEnrolled();}catch(e){alert('Course registration failed');}}
-function showModal(courseId){dropCourseId=courseId;document.getElementById('confirmModal').style.display='block';}
-function closeModal(){document.getElementById('confirmModal').style.display='none';}
-async function confirmDrop(){if(dropCourseId==null)return;const e=localStorage.getItem('userEmail');try{const r=await fetch('/drop-course',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseId:dropCourseId,userEmail:e})});const d=await r.json();alert(d.message);fetchCourses();loadEnrolled();closeModal();}catch(e){alert('Drop course failed');closeModal();}}
-async function loadEnrolled(){const e=localStorage.getItem('userEmail');const t=document.querySelector('#enrolled-table tbody');if(!t)return;const r=await fetch(`/my-schedule?email=${encodeURIComponent(e)}`);const d=await r.json();t.innerHTML='';d.forEach(c=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${c.id}</td><td>${c.name}</td><td>TBD</td><td>3</td><td><button onclick="showModal(${c.id})">Drop</button></td>`;t.appendChild(tr);});}
-async function pay(){try{const r=await fetch('/pay',{method:'POST',headers:{'Content-Type':'application/json'}});const d=await r.json();alert(d.message);}catch(e){alert('Payment failed');}}
-function logout(){localStorage.removeItem('userEmail');window.location.href='login.html';}
-document.addEventListener('DOMContentLoaded',()=>{if(document.getElementById('course-select'))fetchCourses();if(document.getElementById('register-btn'))document.getElementById('register-btn').addEventListener('click',registerCourse);if(document.querySelector('#enrolled-table'))loadEnrolled();});
+// Render enrolled courses
+function renderEnrollments() {
+  enrolledTbody.innerHTML = '';
+  myEnrollments.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${c.id}</td>
+      <td>${c.title}</td>
+      <td>${c.instructor}</td>
+      <td>${c.credits}</td>
+      <td><button data-id="${c.id}" class="drop-btn">Drop</button></td>
+    `;
+    enrolledTbody.appendChild(tr);
+  });
+  document.querySelectorAll('.drop-btn').forEach(btn =>
+    btn.addEventListener('click', () => dropCourse(btn.dataset.id))
+  );
+}
+
+// Populate course dropdown
+function populateCourseSelect() {
+  courseSelect.innerHTML = '<option value="">— Choose a course —</option>';
+  allCourses.forEach(c => {
+    if (!myEnrollments.some(e => e.id === c.id)) {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = `${c.id} — ${c.title} (${c.enrolled}/${c.max})`;
+      courseSelect.appendChild(opt);
+    }
+  });
+}
+
+// Register click handler
+registerBtn.addEventListener('click', () => {
+  const selectedId = courseSelect.value;
+  messageDiv.textContent = '';
+  messageDiv.className = 'message';
+
+  if (!selectedId) {
+    messageDiv.textContent = 'Please select a course first.';
+    return messageDiv.classList.add('error');
+  }
+  const course = allCourses.find(c => c.id === selectedId);
+  if (course.enrolled >= course.max) {
+    messageDiv.textContent = 'Cannot register: course is full.';
+    return messageDiv.classList.add('error');
+  }
+  if (myEnrollments.some(e => e.id === selectedId)) {
+    messageDiv.textContent = 'You are already enrolled.';
+    return messageDiv.classList.add('error');
+  }
+
+  // “Register”
+  course.enrolled++;
+  myEnrollments.push({ id: course.id, title: course.title, instructor: course.instructor, credits: course.credits });
+  messageDiv.textContent = 'Successfully registered!';
+  messageDiv.classList.add('success');
+  renderEnrollments();
+  populateCourseSelect();
+});
+
+// Drop a course
+function dropCourse(id) {
+  myEnrollments = myEnrollments.filter(c => c.id !== id);
+  const course = allCourses.find(c => c.id === id);
+  if (course) course.enrolled--;
+  renderEnrollments();
+  populateCourseSelect();
+}
+
+// Fake logout
+function logout() {
+  alert('Logged out (demo only)');
+}
+
+// Initialize
+renderEnrollments();
+populateCourseSelect();

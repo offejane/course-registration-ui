@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+    }
+    #results {
+      margin-top: 30px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .course {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Course Search</h1>
+
+  <form>
+    <label>Department:
+      <input type="text" id="department">
+    </label>
+    <label>Instructor:
+      <input type="text" id="instructor">
+    </label>
+    <label>Course Number:
+      <input type="text" id="courseNumber">
+    </label>
+    <button type="button" onclick="searchCourses()">Search</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    function searchCourses() {
+      var results = [
+        {
+          name: "Intro to Programming",
+          credits: 3,
+          prereq: "None",
+          type: "Online",
+          max: 30
+        },
+        {
+          name: "Web Basics",
+          credits: 3,
+          prereq: "Intro to Programming",
+          type: "In-person",
+          max: 25
+        }
+      ];
+
+      var resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      for (var i = 0; i < results.length; i++) {
+        var course = results[i];
+        var div = document.createElement("div");
+        div.className = "course";
+        div.innerHTML =
+          "<strong>Name:</strong> " + course.name + "<br>" +
+          "<strong>Credits:</strong> " + course.credits + "<br>" +
+          "<strong>Prerequisites:</strong> " + course.prereq + "<br>" +
+          "<strong>Modality:</strong> " + course.type + "<br>" +
+          "<strong>Max Enrollment:</strong> " + course.max;
+
+        resultsDiv.appendChild(div);
+      }
+    }
+  </script>
+</body>
+</html>

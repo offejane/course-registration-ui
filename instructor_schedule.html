@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VCU | Instructor Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #ffb300;
+      color: #000;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      width: 60%;
+      margin: 40px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    #schedule {
+      margin-top: 30px;
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ffcc00;
+      color: #000;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      padding: 10px;
+      background-color: #eee;
+      color: #555;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>VCU Instructor Portal</h1>
+  </header>
+
+  <div class="container">
+    <h2>Log in to View Your Schedule</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+
+    <button onclick="showSchedule()">Login</button>
+
+    <div id="schedule">
+      <h2>Your Assigned Sessions</h2>
+      <table>
+        <tr>
+          <th>Course</th>
+          <th>Day/Time</th>
+          <th>Location</th>
+        </tr>
+        <tr>
+          <td>INFO 300</td>
+          <td>Mon & Wed, 10:00 AM - 11:15 AM</td>
+          <td>Snead Hall, Room B2115</td>
+        </tr>
+        <tr>
+          <td>INFO 364</td>
+          <td>Tue & Thu, 2:00 PM - 3:15 PM</td>
+          <td>Temple Building, Room 1200</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Virginia Commonwealth University - School of Business
+  </footer>
+
+  <script>
+    function showSchedule() {
+      document.getElementById("schedule").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
