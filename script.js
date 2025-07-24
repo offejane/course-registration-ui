@@ -1,9 +1,9 @@
-// ---- Dummy data; replace with your API calls later ----
 const allCourses = [
   { id: 'INFO101', title: 'Intro to IS', instructor: 'Dr. A', credits: 3, enrolled: 25, max: 30 },
   { id: 'INFO350', title: 'Data Analytics', instructor: 'Dr. B', credits: 4, enrolled: 30, max: 30 },
   { id: 'MATH200', title: 'Calculus II', instructor: 'Dr. C', credits: 4, enrolled: 28, max: 30 }
 ];
+
 let myEnrollments = [
   { id: 'MATH200', title: 'Calculus II', instructor: 'Dr. C', credits: 4 }
 ];
